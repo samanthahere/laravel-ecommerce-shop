@@ -16,7 +16,7 @@ class ShopController extends Controller
             $query->whereHas('category', fn ($c) => $c->where('slug', $request->category));
         }
         if ($request->filled('q')) {
-            $query->where('name', 'like', '%' . $request->q . '%');
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($request->q) . '%']);
         }
 
         return view('shop.index', [
